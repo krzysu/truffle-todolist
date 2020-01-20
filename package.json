@@ -1,0 +1,22 @@
+{
+  "name": "eth-todo-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "truffle": "truffle",
+    "truffle:compile": "truffle compile",
+    "truffle:develop": "truffle develop",
+    "truffle:test": "truffle test",
+    "prettier:solidity": "prettier --write contracts/**/*.sol"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^1.19.1",
+    "prettier-plugin-solidity": "^1.0.0-alpha.36",
+    "truffle": "^5.1.9"
+  }
+}

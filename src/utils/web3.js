@@ -30,9 +30,13 @@ export const disconnect = async () => {
   await web3Connect.clearCachedProvider();
 };
 
-export const getWeb3 = () => web3;
-
-export const getAccount = async () => {
+export const getAddress = async () => {
   const accounts = await web3.eth.getAccounts();
   return accounts[0];
 };
+
+export const getBalance = async address => {
+  return await web3.eth.getBalance(address);
+};
+
+export const getWeb3 = () => web3;

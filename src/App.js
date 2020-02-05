@@ -1,35 +1,15 @@
-import React, {Fragment, useState} from "react";
-import {connect, disconnect, getAccount} from "./utils/web3";
-
-import "./App.css";
+import React from "react";
+import Header from "./components/Header";
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+import styles from "./App.module.css";
 
 const App = () => {
-  const [connected, setConnected] = useState(false);
-  const [address, setAddress] = useState();
-
-  const handleConnect = async () => {
-    await connect();
-    setConnected(true);
-    const account = await getAccount();
-    setAddress(account);
-  };
-
-  const handleDisconnect = async () => {
-    await disconnect();
-    setConnected(false);
-    setAddress(undefined);
-  };
-
   return (
-    <div className="App">
-      {!connected ? (
-        <button onClick={handleConnect}>Connect wallet</button>
-      ) : (
-        <Fragment>
-          <div>Address: {address}</div>
-          <button onClick={handleDisconnect}>Disconnect</button>
-        </Fragment>
-      )}
+    <div className={styles.wrapper}>
+      <Header />
+      <TodoForm />
+      <TodoList />
     </div>
   );
 };

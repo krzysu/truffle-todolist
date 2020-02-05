@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.35em;
   font-family: Georgia, serif;
   -webkit-font-smoothing: antialiased;
@@ -10,6 +10,27 @@ body {
 input,
 button {
   font-family: Georgia, serif;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.35em;
+  box-sizing: border-box;
+  padding: 0.25em 0.5em;
+}
+
+input {
+  width: 100%;
+}
+
+input[type="checkbox"] {
+  width: auto;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.15em;
 }

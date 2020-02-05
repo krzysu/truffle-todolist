@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {useState} from "react";
 import {connect, disconnect, getAddress, getBalance} from "../utils/web3";
 import {formatAddress, formatBalance} from "../utils/utils";
 import styles from "./Header.module.css";
@@ -25,22 +25,22 @@ const Header = () => {
 
   return (
     <header className={styles.wrapper}>
-      <div>
+      <div className={styles.title}>
         <h1>Todo list with value</h1>
         <div>built for ethereum blockchain</div>
       </div>
 
-      <div className={styles.account}>
-        {!connected ? (
-          <button onClick={handleConnect}>Connect wallet</button>
-        ) : (
-          <Fragment>
-            <span>{formatAddress(address)}</span>
-            <span>{formatBalance(balance)}</span>
-            <button onClick={handleDisconnect}>Disconnect</button>
-          </Fragment>
-        )}
-      </div>
+      {!connected ? (
+        <button onClick={handleConnect}>Connect wallet</button>
+      ) : (
+        <div className={styles.account}>
+          <div>
+            <div>{formatAddress(address)}</div>
+            <div>{formatBalance(balance)}</div>
+          </div>
+          <button onClick={handleDisconnect}>Disconnect</button>
+        </div>
+      )}
     </header>
   );
 };

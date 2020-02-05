@@ -1,13 +1,18 @@
 .wrapper {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin: 2em 0 4em;
+  margin: 2em 0 2em;
+}
+
+.title {
+  margin-bottom: 2em;
 }
 
 .account {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 1em;
+  align-items: start;
 }

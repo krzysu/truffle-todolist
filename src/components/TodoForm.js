@@ -1,8 +1,9 @@
 import React, {useState} from "react";
+import styles from "./TodoForm.module.css";
 
 const TodoForm = () => {
   const [title, setTitle] = useState("");
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0.001);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -18,20 +19,30 @@ const TodoForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form onSubmit={handleSubmit} className={styles.wrapper}>
+      <div className={styles.task}>
         <label>Task</label>
         <input
           type="text"
           placeholder="Write your task here"
+          value={title}
           onChange={handleTitleChange}
+          required
         />
       </div>
-      <div>
-        <label>Value in ETH</label>
-        <input type="number" onChange={handleValueChange} />
+      <div className={styles.value}>
+        <label>Value ETH</label>
+        <input
+          type="number"
+          step="0.001"
+          value={value}
+          onChange={handleValueChange}
+          required
+        />
       </div>
-      <button type="submit">Add</button>
+      <button type="submit" className={styles.button}>
+        Add
+      </button>
     </form>
   );
 };

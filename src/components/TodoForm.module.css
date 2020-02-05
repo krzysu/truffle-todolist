@@ -1,0 +1,35 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  grid-column-gap: 1em;
+  grid-row-gap: 1em;
+  align-items: end;
+  margin: 2em 0 4em;
+}
+
+@media screen and (min-width: 480px) {
+  .wrapper {
+    grid-template-columns: 3fr 1fr 1fr;
+    grid-column-gap: 1.5em;
+  }
+}
+
+.task {
+  display: flex;
+  flex-direction: column;
+}
+
+.value {
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  grid-column: 1 / -1;
+}
+
+@media screen and (min-width: 480px) {
+  .button {
+    grid-column: 3;
+  }
+}

@@ -1,14 +1,16 @@
-.wrapper {
+.item {
   display: grid;
   grid-template-columns: 2.5fr 1fr;
   grid-column-gap: 1em;
   grid-row-gap: 1em;
-  align-items: end;
-  margin: 2em 0 6em;
+  align-items: start;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #c9c9c9;
 }
 
 @media screen and (min-width: 480px) {
-  .wrapper {
+  .item {
     grid-template-columns: 2.5fr 1fr 1fr;
     grid-column-gap: 1.5em;
   }
@@ -22,4 +24,8 @@
   .button {
     grid-column: 3;
   }
+}
+
+.value {
+  font-weight: bold;
 }

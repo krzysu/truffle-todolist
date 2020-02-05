@@ -20,25 +20,29 @@ const TodoForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.wrapper}>
-      <div className={styles.task}>
+      <div>
         <label>Task</label>
-        <input
-          type="text"
-          placeholder="Write your task here"
-          value={title}
-          onChange={handleTitleChange}
-          required
-        />
+        <div>
+          <input
+            type="text"
+            placeholder="Write your task here"
+            value={title}
+            onChange={handleTitleChange}
+            required
+          />
+        </div>
       </div>
-      <div className={styles.value}>
+      <div>
         <label>Value ETH</label>
-        <input
-          type="number"
-          step="0.001"
-          value={value}
-          onChange={handleValueChange}
-          required
-        />
+        <div>
+          <input
+            type="number"
+            step="0.001"
+            value={value}
+            onChange={handleValueChange}
+            required
+          />
+        </div>
       </div>
       <button type="submit" className={styles.button}>
         Add

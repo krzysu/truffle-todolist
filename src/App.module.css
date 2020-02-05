@@ -2,4 +2,9 @@
   max-width: 600px;
   padding: 0 1em;
   margin: 0 auto;
+
+  display: grid;
+  grid-template-rows: auto 2em;
+  grid-row-gap: 2em;
+  min-height: 100vh;
 }

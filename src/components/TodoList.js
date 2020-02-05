@@ -5,14 +5,14 @@ const TodoList = () => {
   const items = [
     {
       id: "1",
-      title: "First todo",
-      value: "10000",
+      title: "First todo is a very long item that can stretch to a few lines",
+      value: "1.5000 ETH",
       isDone: false
     },
     {
       id: "2",
       title: "Second todo",
-      value: "10000",
+      value: "0.0001 ETH",
       isDone: true
     }
   ];
@@ -23,9 +23,13 @@ const TodoList = () => {
 
   return (
     <div>
-      {items.map(item => (
-        <TodoItem key={item.id} onClick={handleClick(item.id)} {...item} />
-      ))}
+      {items.length > 0 ? (
+        items.map(item => (
+          <TodoItem key={item.id} onClick={handleClick(item.id)} {...item} />
+        ))
+      ) : (
+        <div>No tasks created from your address yet.</div>
+      )}
     </div>
   );
 };

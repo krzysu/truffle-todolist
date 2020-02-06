@@ -4,7 +4,7 @@ import styles from "./TodoForm.module.css";
 
 const DEFAULT_VALUE = 0.001;
 
-const TodoForm = () => {
+const TodoForm = ({isConnected}) => {
   const [title, setTitle] = useState("");
   const [value, setValue] = useState(DEFAULT_VALUE);
 
@@ -49,7 +49,7 @@ const TodoForm = () => {
           />
         </div>
       </div>
-      <button type="submit" className={styles.button}>
+      <button type="submit" disabled={!isConnected} className={styles.button}>
         Add
       </button>
     </form>

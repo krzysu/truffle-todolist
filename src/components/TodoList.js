@@ -1,25 +1,42 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import {getTodos} from "../utils/contract";
 import TodoItem from "./TodoItem";
 
-const TodoList = () => {
-  const items = [
+const TodoList = ({isConnected}) => {
+  const tempItems = [
     {
       id: "1",
       title: "First todo is a very long item that can stretch to a few lines",
-      value: "1.5000 ETH",
+      value: "1000000000000000",
       isDone: false
     },
     {
       id: "2",
       title: "Second todo",
-      value: "0.0001 ETH",
+      value: "3000000000000000",
       isDone: true
     }
   ];
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const run = async () => {
+      await getTodos();
+      setItems(tempItems);
+    };
+
+    if (isConnected) {
+      run();
+    }
+  }, [isConnected]);
 
   const handleClick = id => () => {
     console.log("mark as done", id);
   };
+
+  if (!isConnected) {
+    return <div>Connect your wallet to see your tasks.</div>;
+  }
 
   return (
     <div>

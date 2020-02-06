@@ -1,4 +1,4 @@
-import {getWeb3, getAddress} from "./web3";
+import {getWeb3} from "./web3";
 import ToDoListJson from "../contracts/ToDoList.json";
 
 let contract;
@@ -28,14 +28,34 @@ export const createTodo = async (title, valueEth) => {
     }
   }
   const web3 = getWeb3();
-  const address = await getAddress();
 
   const receipt = await contract.methods.create(title).send({
-    from: address,
+    from: web3.eth.defaultAccount,
     value: web3.utils.toWei(Number(valueEth).toString())
   });
 
   console.log(receipt);
 
   return receipt;
+};
+
+export const getTodos = async () => {
+  if (!contract) {
+    const success = await initContract();
+    if (!success) {
+      return;
+    }
+  }
+
+  const ids = await contract.methods.getIds().call();
+
+  console.log(ids);
+
+  const todos = ids.map(async id => {
+    return await contract.methods.getById(id).call();
+  });
+
+  console.log(todos);
+
+  return todos;
 };

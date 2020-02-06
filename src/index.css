@@ -28,6 +28,10 @@ button {
   cursor: pointer;
 }
 
+button[disabled] {
+  cursor: auto;
+}
+
 h1,
 h2,
 h3 {

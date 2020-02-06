@@ -3,6 +3,7 @@ import Web3Connect from "web3connect";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 
 let web3;
+let address;
 
 const providerOptions = {
   walletconnect: {
@@ -23,15 +24,23 @@ web3Connect.on("connect", async provider => {
   web3 = new Web3(provider);
 });
 
+const setAddress = async () => {
+  const accounts = await web3.eth.getAccounts();
+  web3.eth.defaultAccount = accounts[0];
+  address = accounts[0];
+};
+
 export const connectIfCachedProvider = async () => {
   if (web3Connect.cachedProvider) {
     await web3Connect.connect();
+    await setAddress();
     return true;
   } else return false;
 };
 
 export const connect = async () => {
   await web3Connect.connect();
+  await setAddress();
 };
 
 export const disconnect = async () => {
@@ -41,10 +50,7 @@ export const disconnect = async () => {
   await web3Connect.clearCachedProvider();
 };
 
-export const getAddress = async () => {
-  const accounts = await web3.eth.getAccounts();
-  return accounts[0];
-};
+export const getAddress = () => address;
 
 export const getBalance = async address => {
   return await web3.eth.getBalance(address);

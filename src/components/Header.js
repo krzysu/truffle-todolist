@@ -9,8 +9,7 @@ import {
 import {formatAddress, formatBalance} from "../utils/utils";
 import styles from "./Header.module.css";
 
-const Header = () => {
-  const [connected, setConnected] = useState(false);
+const Header = ({onConnect, onDisconnect, isConnected}) => {
   const [address, setAddress] = useState();
   const [balance, setBalance] = useState("0");
 
@@ -18,8 +17,8 @@ const Header = () => {
     const run = async () => {
       const wasCached = await connectIfCachedProvider();
       if (wasCached) {
-        setConnected(true);
-        const address = await getAddress();
+        onConnect();
+        const address = getAddress();
         const balance = await getBalance(address);
         setAddress(address);
         setBalance(balance);
@@ -30,8 +29,8 @@ const Header = () => {
 
   const handleConnect = async () => {
     await connect();
-    setConnected(true);
-    const address = await getAddress();
+    onConnect();
+    const address = getAddress();
     const balance = await getBalance(address);
     setAddress(address);
     setBalance(balance);
@@ -39,7 +38,7 @@ const Header = () => {
 
   const handleDisconnect = async () => {
     await disconnect();
-    setConnected(false);
+    onDisconnect();
     setAddress(undefined);
   };
 
@@ -50,7 +49,7 @@ const Header = () => {
         <div>built for ethereum blockchain</div>
       </div>
 
-      {!connected ? (
+      {!isConnected ? (
         <button onClick={handleConnect}>Connect wallet</button>
       ) : (
         <div className={styles.account}>

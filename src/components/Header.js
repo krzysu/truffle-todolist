@@ -1,5 +1,11 @@
-import React, {useState} from "react";
-import {connect, disconnect, getAddress, getBalance} from "../utils/web3";
+import React, {useState, useEffect} from "react";
+import {
+  connectIfCachedProvider,
+  connect,
+  disconnect,
+  getAddress,
+  getBalance
+} from "../utils/web3";
 import {formatAddress, formatBalance} from "../utils/utils";
 import styles from "./Header.module.css";
 
@@ -7,6 +13,20 @@ const Header = () => {
   const [connected, setConnected] = useState(false);
   const [address, setAddress] = useState();
   const [balance, setBalance] = useState("0");
+
+  useEffect(() => {
+    const run = async () => {
+      const wasCached = await connectIfCachedProvider();
+      if (wasCached) {
+        setConnected(true);
+        const address = await getAddress();
+        const balance = await getBalance(address);
+        setAddress(address);
+        setBalance(balance);
+      }
+    };
+    run();
+  }, []);
 
   const handleConnect = async () => {
     await connect();

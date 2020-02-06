@@ -2,6 +2,8 @@ import Web3 from "web3";
 import Web3Connect from "web3connect";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 
+let web3;
+
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
@@ -13,14 +15,23 @@ const providerOptions = {
 
 const web3Connect = new Web3Connect.Core({
   network: "mainnet",
+  cacheProvider: true,
   providerOptions
 });
 
-let web3;
+web3Connect.on("connect", async provider => {
+  web3 = new Web3(provider);
+});
+
+export const connectIfCachedProvider = async () => {
+  if (web3Connect.cachedProvider) {
+    await web3Connect.connect();
+    return true;
+  } else return false;
+};
 
 export const connect = async () => {
-  const provider = await web3Connect.connect();
-  web3 = new Web3(provider);
+  await web3Connect.connect();
 };
 
 export const disconnect = async () => {

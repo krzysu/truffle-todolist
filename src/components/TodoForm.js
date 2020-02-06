@@ -1,13 +1,18 @@
 import React, {useState} from "react";
+import {createTodo} from "../utils/contract";
 import styles from "./TodoForm.module.css";
+
+const DEFAULT_VALUE = 0.001;
 
 const TodoForm = () => {
   const [title, setTitle] = useState("");
-  const [value, setValue] = useState(0.001);
+  const [value, setValue] = useState(DEFAULT_VALUE);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log("submit with", title, value);
+    await createTodo(title, value);
+    setTitle("");
+    setValue(DEFAULT_VALUE);
   };
 
   const handleTitleChange = e => {

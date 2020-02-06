@@ -14,9 +14,7 @@
   "author": "Kris Urbas @krzysu",
   "license": "MIT",
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "@truffle/hdwallet-provider": "^1.0.30",
     "@walletconnect/web3-provider": "^1.0.0-beta.46",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -25,6 +23,9 @@
     "web3connect": "^1.0.0-beta.29"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "prettier": "^1.19.1",
     "prettier-plugin-solidity": "^1.0.0-alpha.36",
     "truffle": "^5.1.9",

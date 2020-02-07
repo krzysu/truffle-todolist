@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getTodos} from "../utils/contract";
+import {getTodos, markTodoAsDone} from "../utils/contract";
 import TodoItem from "./TodoItem";
 
 const TodoList = ({isConnected}) => {
@@ -31,7 +31,7 @@ const TodoList = ({isConnected}) => {
   }, [isConnected]);
 
   const handleClick = id => () => {
-    console.log("mark as done", id);
+    markTodoAsDone(id);
   };
 
   if (!isConnected) {

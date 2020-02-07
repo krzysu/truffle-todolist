@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {createTodo} from "../utils/contract";
 import styles from "./TodoForm.module.css";
 
-const DEFAULT_DEPOSIT = 0.001;
+const DEFAULT_DEPOSIT = 0.01;
 
 const TodoForm = ({isConnected}) => {
   const [title, setTitle] = useState("");
@@ -42,7 +42,8 @@ const TodoForm = ({isConnected}) => {
         <div>
           <input
             type="number"
-            step="0.001"
+            step={DEFAULT_DEPOSIT}
+            min="0"
             value={deposit}
             onChange={handleDepositChange}
             required

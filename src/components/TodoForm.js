@@ -2,25 +2,25 @@ import React, {useState} from "react";
 import {createTodo} from "../utils/contract";
 import styles from "./TodoForm.module.css";
 
-const DEFAULT_VALUE = 0.001;
+const DEFAULT_DEPOSIT = 0.001;
 
 const TodoForm = ({isConnected}) => {
   const [title, setTitle] = useState("");
-  const [value, setValue] = useState(DEFAULT_VALUE);
+  const [deposit, setDeposit] = useState(DEFAULT_DEPOSIT);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    await createTodo(title, value);
+    await createTodo(title, deposit);
     setTitle("");
-    setValue(DEFAULT_VALUE);
+    setDeposit(DEFAULT_DEPOSIT);
   };
 
   const handleTitleChange = e => {
     setTitle(e.target.value);
   };
 
-  const handleValueChange = e => {
-    setValue(e.target.value);
+  const handleDepositChange = e => {
+    setDeposit(e.target.value);
   };
 
   return (
@@ -38,13 +38,13 @@ const TodoForm = ({isConnected}) => {
         </div>
       </div>
       <div>
-        <label>Value ETH</label>
+        <label>Deposit ETH</label>
         <div>
           <input
             type="number"
             step="0.001"
-            value={value}
-            onChange={handleValueChange}
+            value={deposit}
+            onChange={handleDepositChange}
             required
           />
         </div>

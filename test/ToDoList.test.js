@@ -32,6 +32,7 @@ contract("ToDoList", accounts => {
 
       truffleAssert.eventEmitted(tx, "NewToDo", event => {
         return (
+          event.owner === accounts[1] &&
           event.title === "todo item 2 from account 1" &&
           web3.utils.fromWei(event.deposit) === "1" && // eter
           event.id.toNumber() === 2
@@ -65,6 +66,12 @@ contract("ToDoList", accounts => {
         "contract returned wrong ids"
       );
     });
+
+    it("should return empty array if no items", async () => {
+      const contract = await ToDoList.deployed();
+      const ids = await contract.getIds.call({from: accounts[2]});
+      assert.deepEqual(ids, [], "contract returned wrong result");
+    });
   });
 
   describe("getById", () => {
@@ -72,10 +79,11 @@ contract("ToDoList", accounts => {
       const contract = await ToDoList.deployed();
 
       // account 1 owns item 1
-      const {title, deposit, isDone} = await contract.getById(1, {
+      const {id, title, deposit, isDone} = await contract.getById(1, {
         from: accounts[1]
       });
 
+      assert.equal(id, 1, "contract returned wrong item");
       assert.equal(
         title,
         "todo item 1 from account 1",

@@ -1,7 +1,7 @@
 {
   "name": "truffle-todolist",
   "version": "1.0.0",
-  "description": "todo list for ethereum blockchain built with truffle",
+  "description": "todo list for ethereum blockchain",
   "private": true,
   "scripts": {
     "start": "react-scripts start",

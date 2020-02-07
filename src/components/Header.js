@@ -45,7 +45,7 @@ const Header = ({onConnect, onDisconnect, isConnected}) => {
   return (
     <header className={styles.wrapper}>
       <div className={styles.title}>
-        <h1>Todo list with value</h1>
+        <h1>Todo list</h1>
         <div>built for ethereum blockchain</div>
       </div>
 

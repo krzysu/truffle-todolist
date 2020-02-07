@@ -3,26 +3,26 @@ import {getTodos} from "../utils/contract";
 import TodoItem from "./TodoItem";
 
 const TodoList = ({isConnected}) => {
-  const tempItems = [
-    {
-      id: "1",
-      title: "First todo is a very long item that can stretch to a few lines",
-      value: "1000000000000000",
-      isDone: false
-    },
-    {
-      id: "2",
-      title: "Second todo",
-      value: "3000000000000000",
-      isDone: true
-    }
-  ];
+  // const tempItems = [
+  //   {
+  //     id: "1",
+  //     title: "First todo is a very long item that can stretch to a few lines",
+  //     deposit: "1000000000000000",
+  //     isDone: false
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Second todo",
+  //     deposit: "3000000000000000",
+  //     isDone: true
+  //   }
+  // ];
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     const run = async () => {
-      await getTodos();
-      setItems(tempItems);
+      const items = await getTodos();
+      setItems(items);
     };
 
     if (isConnected) {

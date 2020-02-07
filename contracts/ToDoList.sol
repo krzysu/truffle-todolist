@@ -2,8 +2,14 @@ pragma solidity >=0.4.21 <0.7.0;
 
 import "./Ownable.sol";
 
+
 contract ToDoList is Ownable {
-    event NewToDo(string title, uint256 deposit, uint8 id);
+    event NewToDo(
+        address indexed owner,
+        string title,
+        uint256 deposit,
+        uint8 id
+    );
     event MarkedAsDone(uint8 id);
 
     struct ToDo {
@@ -24,7 +30,7 @@ contract ToDoList is Ownable {
         uint8 id = uint8(todos.length - 1);
         todoOwners[id] = msg.sender;
         ownerTodosCount[msg.sender]++;
-        emit NewToDo(_title, msg.value, id); // can non-owner listen to these events?
+        emit NewToDo(msg.sender, _title, msg.value, id);
     }
 
     // return sender todo ids
@@ -43,11 +49,11 @@ contract ToDoList is Ownable {
     function getById(uint8 _id)
         public
         view
-        returns (string memory title, uint256 deposit, bool isDone)
+        returns (uint8 id, string memory title, uint256 deposit, bool isDone)
     {
         require(msg.sender == todoOwners[_id], "Sender is not the owner");
         ToDo storage todo = todos[_id];
-        return (todo.title, todo.deposit, todo.isDone);
+        return (_id, todo.title, todo.deposit, todo.isDone);
     }
 
     function markAsDone(uint8 _id) public {

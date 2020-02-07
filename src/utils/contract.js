@@ -20,7 +20,7 @@ const initContract = async () => {
   return true;
 };
 
-export const createTodo = async (title, valueEth) => {
+export const createTodo = async (title, depositEth) => {
   if (!contract) {
     const success = await initContract();
     if (!success) {
@@ -31,10 +31,8 @@ export const createTodo = async (title, valueEth) => {
 
   const receipt = await contract.methods.create(title).send({
     from: web3.eth.defaultAccount,
-    value: web3.utils.toWei(Number(valueEth).toString())
+    value: web3.utils.toWei(Number(depositEth).toString())
   });
-
-  console.log(receipt);
 
   return receipt;
 };
@@ -49,13 +47,15 @@ export const getTodos = async () => {
 
   const ids = await contract.methods.getIds().call();
 
-  console.log(ids);
+  if (!ids || ids.length === 0) {
+    return [];
+  }
 
-  const todos = ids.map(async id => {
-    return await contract.methods.getById(id).call();
-  });
-
-  console.log(todos);
+  const todos = await Promise.all(
+    ids.map(async id => {
+      return await contract.methods.getById(id).call();
+    })
+  );
 
   return todos;
 };

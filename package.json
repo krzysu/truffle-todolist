@@ -8,6 +8,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "truffle:develop": "truffle develop",
+    "truffle:migrate": "truffle migrate --reset --network ganache",
     "truffle:test": "truffle test",
     "prettier:solidity": "prettier --write contracts/**/*.sol"
   },

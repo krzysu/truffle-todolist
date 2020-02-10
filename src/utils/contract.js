@@ -51,12 +51,17 @@ export const createTodo = async (title, depositEth) => {
     }
   }
   const web3 = getWeb3();
-  const receipt = await contract.methods.create(title).send({
-    from: web3.eth.defaultAccount,
-    value: web3.utils.toWei(Number(depositEth).toString())
-  });
 
-  return receipt;
+  try {
+    const receipt = await contract.methods.create(title).send({
+      from: web3.eth.defaultAccount,
+      value: web3.utils.toWei(Number(depositEth).toString())
+    });
+
+    return receipt;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const markTodoAsDone = async id => {
@@ -72,4 +77,24 @@ export const markTodoAsDone = async id => {
   });
 
   return receipt;
+};
+
+export const subscribeToNewTodos = callback => {
+  const web3 = getWeb3();
+
+  return contract.events
+    .NewToDo({filter: {owner: web3.eth.defaultAccount}})
+    .on("data", event => {
+      callback(null, event.returnValues);
+    })
+    .on("error", error => callback(error));
+};
+
+export const subscribeToMarkAsDone = callback => {
+  return contract.events
+    .MarkedAsDone()
+    .on("data", event => {
+      callback(null, event.returnValues);
+    })
+    .on("error", error => callback(error));
 };

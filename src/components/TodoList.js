@@ -1,5 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {getTodos, markTodoAsDone} from "../utils/contract";
+import {
+  getTodos,
+  markTodoAsDone,
+  subscribeToNewTodos,
+  subscribeToMarkAsDone
+} from "../utils/contract";
 import TodoItem from "./TodoItem";
 
 const TodoList = ({isConnected}) => {
@@ -18,17 +23,43 @@ const TodoList = ({isConnected}) => {
   //   }
   // ];
   const [items, setItems] = useState([]);
+  const [isContractReady, setIsContractReady] = useState(false);
 
   useEffect(() => {
     const run = async () => {
       const items = await getTodos();
       setItems(items);
+      setIsContractReady(true);
     };
 
     if (isConnected) {
       run();
     }
   }, [isConnected]);
+
+  useEffect(() => {
+    if (!isContractReady) {
+      return;
+    }
+    const newToDoSubscription = subscribeToNewTodos((error, data) => {
+      if (error) {
+        console.error(error);
+      }
+      console.log("New item created", data);
+    });
+
+    const markAsDoneSubscription = subscribeToMarkAsDone((error, data) => {
+      if (error) {
+        console.error(error);
+      }
+      console.log("Item marked as done", data);
+    });
+
+    return () => {
+      newToDoSubscription.unsubscribe();
+      markAsDoneSubscription.unsubscribe();
+    };
+  }, [isContractReady]);
 
   const handleClick = id => () => {
     markTodoAsDone(id);

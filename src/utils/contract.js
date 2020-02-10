@@ -28,7 +28,11 @@ export const getTodos = async () => {
     }
   }
 
-  const ids = await contract.methods.getIds().call();
+  const web3 = getWeb3();
+
+  const ids = await contract.methods.getIds().call({
+    from: web3.eth.defaultAccount
+  });
 
   if (!ids || ids.length === 0) {
     return [];
@@ -36,7 +40,9 @@ export const getTodos = async () => {
 
   const todos = await Promise.all(
     ids.map(async id => {
-      return await contract.methods.getById(id).call();
+      return await contract.methods.getById(id).call({
+        from: web3.eth.defaultAccount
+      });
     })
   );
 

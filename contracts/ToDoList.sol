@@ -1,7 +1,6 @@
-pragma solidity >=0.5.0 <0.7.0;
+pragma solidity 0.5.16;
 
 import "./Ownable.sol";
-
 
 contract ToDoList is Ownable {
     event NewToDo(
@@ -20,8 +19,8 @@ contract ToDoList is Ownable {
 
     ToDo[] private todos;
 
-    mapping(uint8 => address) todoOwners;
-    mapping(address => uint8) ownerTodosCount;
+    mapping(uint8 => address) private todoOwners;
+    mapping(address => uint8) private ownerTodosCount;
 
     // to create a new todo item sender has to send some ether that will be released when todo is done
     function create(string memory _title) public payable {

@@ -24,7 +24,7 @@ web3Connect.on("connect", async provider => {
   web3 = new Web3(provider);
 });
 
-if (window.ethereum) {
+if (window.ethereum && typeof web3 !== "undefined") {
   window.ethereum.on("accountsChanged", async accounts => {
     web3.eth.defaultAccount = accounts[0];
     address = accounts[0];

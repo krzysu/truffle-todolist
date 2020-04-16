@@ -3,7 +3,7 @@ import ToDoListJson from "../contracts/ToDoList.json";
 
 let contract;
 
-const initContract = async () => {
+export const initContract = async () => {
   const web3 = getWeb3();
   const networkId = await web3.eth.net.getId();
 

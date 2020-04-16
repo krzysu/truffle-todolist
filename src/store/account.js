@@ -5,13 +5,14 @@ import {
   getAddress,
   getBalance
 } from "../utils/web3";
+import {initContract} from "../utils/contract";
 import {formatAddress, formatBalance} from "../utils/utils";
 
 const CONNECTING = "account/CONNECTING";
 const CONNECTED = "account/CONNECTED";
-const DISCONNECTED = "account/DISCONNECTED";
 const SET_ADDRESS = "account/SET_ADDRESS";
 const SET_BALANCE = "account/SET_BALANCE";
+export const DISCONNECTED = "account/DISCONNECTED";
 
 const initialState = {
   isConnected: false,
@@ -66,13 +67,18 @@ const setBalance = balance => ({
   payload: balance
 });
 
-export const connectWallet = () => async dispatch => {
-  dispatch({type: CONNECTING});
-  await connect();
+const onConnect = async dispatch => {
   const address = getAddress();
   const balance = await getBalance(address);
   dispatch(setAddress(address));
   dispatch(setBalance(balance));
+  await initContract();
+};
+
+export const connectWallet = () => async dispatch => {
+  dispatch({type: CONNECTING});
+  await connect();
+  await onConnect(dispatch);
   dispatch({type: CONNECTED});
 };
 
@@ -85,10 +91,7 @@ export const connectCachedWallet = () => async dispatch => {
   dispatch({type: CONNECTING});
   const wasCached = await connectIfCachedProvider();
   if (wasCached) {
-    const address = getAddress();
-    const balance = await getBalance(address);
-    dispatch(setAddress(address));
-    dispatch(setBalance(balance));
+    await onConnect(dispatch);
     dispatch({type: CONNECTED});
   } else {
     dispatch({type: DISCONNECTED});

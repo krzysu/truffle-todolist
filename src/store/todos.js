@@ -1,8 +1,10 @@
-import {getTodos} from "../utils/contract";
+import {getTodos, createTodo, markTodoAsDone} from "../utils/contract";
+import {DISCONNECTED} from "./account";
 
 const TODOS_FETCHING = "todos/FETCHING";
 const TODOS_FETCHED = "todos/FETCHED";
-const TODOS_SET = "todos/SET";
+const SET_TODOS = "todos/SET";
+const UPDATE_TODO = "todos/UPDATE";
 
 const initialState = {
   isFetching: false,
@@ -22,11 +24,14 @@ export const reducer = (state = initialState, action = {}) => {
         ...state,
         isFetching: false
       };
-    case TODOS_SET:
+    case SET_TODOS:
       return {
         ...state,
         items: action.payload
       };
+
+    case DISCONNECTED:
+      return initialState;
 
     default:
       return state;
@@ -35,8 +40,13 @@ export const reducer = (state = initialState, action = {}) => {
 
 // actions
 const setTodos = items => ({
-  type: TODOS_SET,
+  type: SET_TODOS,
   payload: items
+});
+
+const updateTodo = (id, data) => ({
+  type: UPDATE_TODO,
+  payload: {id, data}
 });
 
 export const fetchTodos = () => async dispatch => {
@@ -46,8 +56,12 @@ export const fetchTodos = () => async dispatch => {
   dispatch({type: TODOS_FETCHED});
 };
 
-export const markTodoAsDone = id => async dispatch => {
-  // todo
+export const markAsDone = id => dispatch => {
+  markTodoAsDone(id);
+};
+
+export const addTodo = (title, deposit) => dispatch => {
+  createTodo(title, deposit);
 };
 
 // selectors

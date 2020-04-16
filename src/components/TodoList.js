@@ -6,49 +6,43 @@ import {
   selectTodoItems,
   selectTodoIsFetching,
   fetchTodos,
-  markTodoAsDone
+  markAsDone
 } from "../store/todos";
 import TodoItem from "./TodoItem";
 
-const TodoList = ({
-  isConnected,
-  isFetching,
-  items,
-  fetchTodos,
-  markTodoAsDone
-}) => {
+const TodoList = ({isConnected, isFetching, items, fetchTodos, markAsDone}) => {
   useEffect(() => {
     if (isConnected) {
       fetchTodos();
     }
   }, [isConnected]);
 
-  // useEffect(() => {
-  //   if (!isContractReady) {
-  //     return;
-  //   }
-  //   const newToDoSubscription = subscribeToNewTodos((error, data) => {
-  //     if (error) {
-  //       console.error(error);
-  //     }
-  //     console.log("New item created", data);
-  //   });
+  useEffect(() => {
+    if (!isConnected) {
+      return;
+    }
+    const newToDoSubscription = subscribeToNewTodos((error, data) => {
+      if (error) {
+        console.error(error);
+      }
+      console.log("New item created", data);
+    });
 
-  //   const markAsDoneSubscription = subscribeToMarkAsDone((error, data) => {
-  //     if (error) {
-  //       console.error(error);
-  //     }
-  //     console.log("Item marked as done", data);
-  //   });
+    const markAsDoneSubscription = subscribeToMarkAsDone((error, data) => {
+      if (error) {
+        console.error(error);
+      }
+      console.log("Item marked as done", data);
+    });
 
-  //   return () => {
-  //     newToDoSubscription.unsubscribe();
-  //     markAsDoneSubscription.unsubscribe();
-  //   };
-  // }, [isContractReady]);
+    return () => {
+      newToDoSubscription.unsubscribe();
+      markAsDoneSubscription.unsubscribe();
+    };
+  }, [isConnected]);
 
   const handleClick = id => () => {
-    markTodoAsDone(id);
+    markAsDone(id);
   };
 
   if (!isConnected) {
@@ -78,6 +72,6 @@ const mapStateToProps = state => ({
   items: selectTodoItems(state)
 });
 
-const mapDispatchToProps = {fetchTodos, markTodoAsDone};
+const mapDispatchToProps = {fetchTodos, markAsDone};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

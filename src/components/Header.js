@@ -1,47 +1,24 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
+import {connect} from "react-redux";
 import {
-  connectIfCachedProvider,
-  connect,
-  disconnect,
-  getAddress,
-  getBalance
-} from "../utils/web3";
-import {formatAddress, formatBalance} from "../utils/utils";
+  connectWallet,
+  disconnectWallet,
+  selectIsConnected,
+  selectIsConnecting,
+  selectFormattedAddress,
+  selectFormattedBalance
+} from "../store/account";
+
 import styles from "./Header.module.css";
 
-const Header = ({onConnect, onDisconnect, isConnected}) => {
-  const [address, setAddress] = useState();
-  const [balance, setBalance] = useState("0");
-
-  useEffect(() => {
-    const run = async () => {
-      const wasCached = await connectIfCachedProvider();
-      if (wasCached) {
-        onConnect();
-        const address = getAddress();
-        const balance = await getBalance(address);
-        setAddress(address);
-        setBalance(balance);
-      }
-    };
-    run();
-  }, []);
-
-  const handleConnect = async () => {
-    await connect();
-    onConnect();
-    const address = getAddress();
-    const balance = await getBalance(address);
-    setAddress(address);
-    setBalance(balance);
-  };
-
-  const handleDisconnect = async () => {
-    await disconnect();
-    onDisconnect();
-    setAddress(undefined);
-  };
-
+const Header = ({
+  isConnected,
+  isConnecting,
+  address,
+  balance,
+  connectWallet,
+  disconnectWallet
+}) => {
   return (
     <header className={styles.wrapper}>
       <div className={styles.title}>
@@ -50,18 +27,29 @@ const Header = ({onConnect, onDisconnect, isConnected}) => {
       </div>
 
       {!isConnected ? (
-        <button onClick={handleConnect}>Connect wallet</button>
+        <button onClick={connectWallet} disabled={isConnecting}>
+          Connect wallet
+        </button>
       ) : (
         <div className={styles.account}>
           <div>
-            <div>{formatAddress(address)}</div>
-            <div>{formatBalance(balance)}</div>
+            <div>{address}</div>
+            <div>{balance}</div>
           </div>
-          <button onClick={handleDisconnect}>Disconnect</button>
+          <button onClick={disconnectWallet}>Disconnect</button>
         </div>
       )}
     </header>
   );
 };
 
-export default Header;
+const mapStateToProps = state => ({
+  isConnected: selectIsConnected(state),
+  isConnecting: selectIsConnecting(state),
+  address: selectFormattedAddress(state),
+  balance: selectFormattedBalance(state)
+});
+
+const mapDispatchToProps = {connectWallet, disconnectWallet};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

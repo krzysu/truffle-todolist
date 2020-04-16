@@ -14870,10 +14870,10 @@ web3@^1.0.0-beta.34, web3@^1.2.4, web3@^1.2.5:
     web3-shh "1.2.6"
     web3-utils "1.2.6"
 
-web3connect@^1.0.0-beta.29:
-  version "1.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/web3connect/-/web3connect-1.0.0-beta.29.tgz#c7a2ed97c419beb894658291319c446596bf72a9"
-  integrity sha512-zOPt5BYMIKHN1G87vyOXIlxhYF7zKf0HZNW+uooPue3foM8gEybVeHznTsSB7V5kYN3hTvaq1pyFCVeu4TILeg==
+web3modal@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/web3modal/-/web3modal-1.3.0.tgz#edf68c39c7dd2f5664ef2b8b8c5669ae1fc90ff7"
+  integrity sha512-kjc4MVC7EFEvL2nt8Lt3OeERdJF9ur5kQKXkWssjp9tMDp1U25UoQOV+FDWtudLuv1ZmGKfcsqU1/48AlG/XNw==
   dependencies:
     prop-types "^15.7.2"
     react "^16.8.6"

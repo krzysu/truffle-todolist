@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import Web3Connect from "web3connect";
+import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 
 let web3;
@@ -14,13 +14,13 @@ const providerOptions = {
   }
 };
 
-const web3Connect = new Web3Connect.Core({
+const web3Modal = new Web3Modal({
   network: "mainnet",
   cacheProvider: true,
   providerOptions
 });
 
-web3Connect.on("connect", async provider => {
+web3Modal.on("connect", async provider => {
   web3 = new Web3(provider);
 });
 
@@ -38,15 +38,15 @@ const setAddress = async () => {
 };
 
 export const connectIfCachedProvider = async () => {
-  if (web3Connect.cachedProvider) {
-    await web3Connect.connect();
+  if (web3Modal.cachedProvider) {
+    await web3Modal.connect();
     await setAddress();
     return true;
   } else return false;
 };
 
 export const connect = async () => {
-  await web3Connect.connect();
+  await web3Modal.connect();
   await setAddress();
 };
 
@@ -54,7 +54,7 @@ export const disconnect = async () => {
   if (web3 && web3.currentProvider && web3.currentProvider.close) {
     await web3.currentProvider.close();
   }
-  await web3Connect.clearCachedProvider();
+  await web3Modal.clearCachedProvider();
 };
 
 export const getAddress = () => address;

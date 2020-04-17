@@ -1,5 +1,5 @@
-import {getTodos, createTodo, markTodoAsDone} from "../utils/contract";
-import {DISCONNECTED} from "./account";
+import {getTodos, createTodo, markTodoAsDone} from "./contract";
+import {DISCONNECTED, selectWeb3, selectContract} from "./account";
 
 const TODOS_FETCHING = "todos/FETCHING";
 const TODOS_FETCHED = "todos/FETCHED";
@@ -49,9 +49,12 @@ const updateTodo = (id, data) => ({
   payload: {id, data}
 });
 
-export const fetchTodos = () => async dispatch => {
+export const fetchTodos = () => async (dispatch, getState) => {
   dispatch({type: TODOS_FETCHING});
-  const items = await getTodos();
+  const state = getState();
+  const web3 = selectWeb3(state);
+  const contract = selectContract(state);
+  const items = await getTodos(contract, web3)();
   dispatch(setTodos(items));
   dispatch({type: TODOS_FETCHED});
 };

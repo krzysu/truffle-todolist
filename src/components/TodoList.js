@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
-import {subscribeToNewTodos, subscribeToMarkAsDone} from "../utils/contract";
+import {subscribeToNewTodos, subscribeToMarkAsDone} from "../store/contract";
 import {selectIsConnected} from "../store/account";
 import {
   selectTodoItems,

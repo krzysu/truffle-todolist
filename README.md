@@ -12,6 +12,8 @@ This is my first Solidity and dApp learning project.
 
 - update list when new item created or marked as done
 - keep state in redux store (or useReducer)
+- refactor store and utils into one
+- test if two diff account don't see each others tasks, also on updates
 - react to network and account changes
 - deploy contract to test network and publish frontend to netlify
 

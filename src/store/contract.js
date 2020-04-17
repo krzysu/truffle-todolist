@@ -1,12 +1,6 @@
-import {getWeb3} from "./web3";
 import ToDoListJson from "../contracts/ToDoList.json";
 
-let contract;
-
-export const initContract = async () => {
-  const web3 = getWeb3();
-  const networkId = await web3.eth.net.getId();
-
+export const initContract = (web3, networkId) => {
   const contractAddress = ToDoListJson.networks[networkId]
     ? ToDoListJson.networks[networkId].address
     : false;
@@ -16,20 +10,10 @@ export const initContract = async () => {
     return false;
   }
 
-  contract = new web3.eth.Contract(ToDoListJson.abi, contractAddress);
-  return true;
+  return new web3.eth.Contract(ToDoListJson.abi, contractAddress);
 };
 
-export const getTodos = async () => {
-  if (!contract) {
-    const success = await initContract();
-    if (!success) {
-      return;
-    }
-  }
-
-  const web3 = getWeb3();
-
+export const getTodos = (contract, web3) => async () => {
   const ids = await contract.methods.getIds().call({
     from: web3.eth.defaultAccount
   });
@@ -49,15 +33,7 @@ export const getTodos = async () => {
   return todos;
 };
 
-export const createTodo = async (title, depositEth) => {
-  if (!contract) {
-    const success = await initContract();
-    if (!success) {
-      return;
-    }
-  }
-  const web3 = getWeb3();
-
+export const createTodo = (contract, web3) => async (title, depositEth) => {
   try {
     const receipt = await contract.methods.create(title).send({
       from: web3.eth.defaultAccount,
@@ -70,14 +46,7 @@ export const createTodo = async (title, depositEth) => {
   }
 };
 
-export const markTodoAsDone = async id => {
-  if (!contract) {
-    const success = await initContract();
-    if (!success) {
-      return;
-    }
-  }
-  const web3 = getWeb3();
+export const markTodoAsDone = (contract, web3) => async id => {
   const receipt = await contract.methods.markAsDone(id).send({
     from: web3.eth.defaultAccount
   });
@@ -85,9 +54,7 @@ export const markTodoAsDone = async id => {
   return receipt;
 };
 
-export const subscribeToNewTodos = callback => {
-  const web3 = getWeb3();
-
+export const subscribeToNewTodos = (contract, web3) => callback => {
   return contract.events
     .NewToDo({filter: {owner: web3.eth.defaultAccount}})
     .on("data", event => {
@@ -96,7 +63,7 @@ export const subscribeToNewTodos = callback => {
     .on("error", error => callback(error));
 };
 
-export const subscribeToMarkAsDone = callback => {
+export const subscribeToMarkAsDone = contract => callback => {
   return contract.events
     .MarkedAsDone()
     .on("data", event => {

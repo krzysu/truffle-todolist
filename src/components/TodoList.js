@@ -14,7 +14,7 @@ const TodoList = ({isConnected, isFetching, items, fetchTodos, markAsDone}) => {
     if (isConnected) {
       fetchTodos();
     }
-  }, [isConnected]);
+  }, [isConnected, fetchTodos]);
 
   const handleClick = id => () => {
     markAsDone(id);

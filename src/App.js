@@ -11,7 +11,7 @@ import styles from "./App.module.css";
 const App = ({connectCachedWallet}) => {
   useEffect(() => {
     connectCachedWallet();
-  }, []);
+  }, [connectCachedWallet]);
 
   return (
     <div className={styles.wrapper}>

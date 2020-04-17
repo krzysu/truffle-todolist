@@ -1,5 +1,6 @@
 import {getTodos, createTodo, markTodoAsDone} from "./contract";
 import {DISCONNECTED, selectWeb3, selectContract} from "./account";
+import {formatBalance} from "../utils";
 
 const TODOS_FETCHING = "todos/FETCHING";
 const TODOS_FETCHED = "todos/FETCHED";
@@ -27,7 +28,7 @@ export const reducer = (state = initialState, action = {}) => {
     case SET_TODOS:
       return {
         ...state,
-        items: action.payload
+        items: action.payload.reverse()
       };
 
     case DISCONNECTED:
@@ -59,15 +60,35 @@ export const fetchTodos = () => async (dispatch, getState) => {
   dispatch({type: TODOS_FETCHED});
 };
 
-export const markAsDone = id => dispatch => {
-  markTodoAsDone(id);
+export const markAsDone = id => (_, getState) => {
+  const state = getState();
+  const web3 = selectWeb3(state);
+  const contract = selectContract(state);
+  markTodoAsDone(contract, web3)(id);
 };
 
-export const addTodo = (title, deposit) => dispatch => {
-  createTodo(title, deposit);
+export const addTodo = (title, deposit) => (_, getState) => {
+  const state = getState();
+  const web3 = selectWeb3(state);
+  const contract = selectContract(state);
+  createTodo(contract, web3)(title, deposit);
 };
 
 // selectors
 const selectTodos = state => state.todos || {};
+
 export const selectTodoIsFetching = state => selectTodos(state).isFetching;
-export const selectTodoItems = state => selectTodos(state).items;
+
+export const selectTodoItems = state => {
+  const items = selectTodos(state).items;
+
+  const web3 = selectWeb3(state);
+  if (!web3) {
+    return items;
+  }
+
+  return items.map(item => ({
+    ...item,
+    deposit: formatBalance(web3.utils.fromWei(item.deposit))
+  }));
+};

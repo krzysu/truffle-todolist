@@ -17,29 +17,29 @@ const TodoList = ({isConnected, isFetching, items, fetchTodos, markAsDone}) => {
     }
   }, [isConnected]);
 
-  useEffect(() => {
-    if (!isConnected) {
-      return;
-    }
-    const newToDoSubscription = subscribeToNewTodos((error, data) => {
-      if (error) {
-        console.error(error);
-      }
-      console.log("New item created", data);
-    });
+  // useEffect(() => {
+  //   if (!isConnected) {
+  //     return;
+  //   }
+  //   const newToDoSubscription = subscribeToNewTodos((error, data) => {
+  //     if (error) {
+  //       console.error(error);
+  //     }
+  //     console.log("New item created", data);
+  //   });
 
-    const markAsDoneSubscription = subscribeToMarkAsDone((error, data) => {
-      if (error) {
-        console.error(error);
-      }
-      console.log("Item marked as done", data);
-    });
+  //   const markAsDoneSubscription = subscribeToMarkAsDone((error, data) => {
+  //     if (error) {
+  //       console.error(error);
+  //     }
+  //     console.log("Item marked as done", data);
+  //   });
 
-    return () => {
-      newToDoSubscription.unsubscribe();
-      markAsDoneSubscription.unsubscribe();
-    };
-  }, [isConnected]);
+  //   return () => {
+  //     newToDoSubscription.unsubscribe();
+  //     markAsDoneSubscription.unsubscribe();
+  //   };
+  // }, [isConnected]);
 
   const handleClick = id => () => {
     markAsDone(id);

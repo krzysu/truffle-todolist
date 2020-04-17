@@ -1,9 +1,8 @@
 import Web3 from "web3";
-import web3Modal from "../utils/web3modal";
+import web3Modal from "./web3modal";
 import {initContract} from "./contract";
-import {formatAddress, formatBalance} from "../utils/utils";
+import {formatAddress, formatBalance} from "../utils";
 
-const CONNECTING = "account/CONNECTING";
 const CONNECTED = "account/CONNECTED";
 const SET_ADDRESS = "account/SET_ADDRESS";
 const SET_BALANCE = "account/SET_BALANCE";
@@ -15,7 +14,6 @@ export const DISCONNECTED = "account/DISCONNECTED";
 
 const initialState = {
   isConnected: false,
-  isConnecting: false,
   address: "",
   balance: "0",
   chainId: "",
@@ -26,16 +24,9 @@ const initialState = {
 
 export const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
-    case CONNECTING:
-      return {
-        ...state,
-        isConnecting: true
-      };
-
     case CONNECTED:
       return {
         ...state,
-        isConnecting: false,
         isConnected: true
       };
 
@@ -95,8 +86,13 @@ const subscribeProvider = async (provider, dispatch, getState) => {
 
   provider.on("accountsChanged", async accounts => {
     const web3 = selectWeb3(getState());
-    web3.eth.defaultAccount = accounts[0];
-    dispatch(setAddress(accounts[0]));
+
+    const address = accounts[0];
+    web3.eth.defaultAccount = address;
+    dispatch(setAddress(address));
+
+    const balance = await web3.eth.getBalance(address);
+    dispatch(setBalance(balance));
   });
 
   provider.on("chainChanged", async chainId => {
@@ -147,8 +143,8 @@ const setContract = contract => ({
 });
 
 export const connectWallet = () => async (dispatch, getState) => {
-  dispatch({type: CONNECTING});
   const provider = await web3Modal.connect();
+
   const web3 = new Web3(provider);
   dispatch(setWeb3(web3));
 
@@ -193,7 +189,6 @@ export const selectWeb3 = state => selectAccount(state).web3;
 export const selectContract = state => selectAccount(state).contract;
 
 export const selectIsConnected = state => selectAccount(state).isConnected;
-export const selectIsConnecting = state => selectAccount(state).isConnecting;
 export const selectFormattedAddress = state =>
   formatAddress(selectAccount(state).address);
 

@@ -4,7 +4,6 @@ import {
   connectWallet,
   disconnectWallet,
   selectIsConnected,
-  selectIsConnecting,
   selectFormattedAddress,
   selectFormattedBalance
 } from "../store/account";
@@ -13,7 +12,6 @@ import styles from "./Header.module.css";
 
 const Header = ({
   isConnected,
-  isConnecting,
   address,
   balance,
   connectWallet,
@@ -27,9 +25,7 @@ const Header = ({
       </div>
 
       {!isConnected ? (
-        <button onClick={connectWallet} disabled={isConnecting}>
-          Connect wallet
-        </button>
+        <button onClick={connectWallet}>Connect wallet</button>
       ) : (
         <div className={styles.account}>
           <div>
@@ -45,7 +41,6 @@ const Header = ({
 
 const mapStateToProps = state => ({
   isConnected: selectIsConnected(state),
-  isConnecting: selectIsConnecting(state),
   address: selectFormattedAddress(state),
   balance: selectFormattedBalance(state)
 });

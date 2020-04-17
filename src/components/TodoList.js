@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
-import {subscribeToNewTodos, subscribeToMarkAsDone} from "../store/contract";
 import {selectIsConnected} from "../store/account";
 import {
   selectTodoItems,
@@ -16,30 +15,6 @@ const TodoList = ({isConnected, isFetching, items, fetchTodos, markAsDone}) => {
       fetchTodos();
     }
   }, [isConnected]);
-
-  // useEffect(() => {
-  //   if (!isConnected) {
-  //     return;
-  //   }
-  //   const newToDoSubscription = subscribeToNewTodos((error, data) => {
-  //     if (error) {
-  //       console.error(error);
-  //     }
-  //     console.log("New item created", data);
-  //   });
-
-  //   const markAsDoneSubscription = subscribeToMarkAsDone((error, data) => {
-  //     if (error) {
-  //       console.error(error);
-  //     }
-  //     console.log("Item marked as done", data);
-  //   });
-
-  //   return () => {
-  //     newToDoSubscription.unsubscribe();
-  //     markAsDoneSubscription.unsubscribe();
-  //   };
-  // }, [isConnected]);
 
   const handleClick = id => () => {
     markAsDone(id);

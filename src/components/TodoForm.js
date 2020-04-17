@@ -13,9 +13,11 @@ const TodoForm = ({isConnected, addTodo}) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    await addTodo(title, deposit);
-    setTitle("");
-    setDeposit(DEFAULT_DEPOSIT);
+    try {
+      await addTodo(title, deposit);
+      setTitle("");
+      setDeposit(DEFAULT_DEPOSIT);
+    } catch (e) {}
   };
 
   const handleTitleChange = e => {

@@ -34,16 +34,12 @@ export const getTodos = (contract, web3) => async () => {
 };
 
 export const createTodo = (contract, web3) => async (title, depositEth) => {
-  try {
-    const receipt = await contract.methods.create(title).send({
-      from: web3.eth.defaultAccount,
-      value: web3.utils.toWei(Number(depositEth).toString())
-    });
+  const receipt = await contract.methods.create(title).send({
+    from: web3.eth.defaultAccount,
+    value: web3.utils.toWei(Number(depositEth).toString())
+  });
 
-    return receipt;
-  } catch (error) {
-    console.error(error);
-  }
+  return receipt;
 };
 
 export const markTodoAsDone = (contract, web3) => async id => {

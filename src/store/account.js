@@ -111,6 +111,13 @@ const subscribeProvider = async (provider, dispatch, getState) => {
   });
 };
 
+const unsubscribeProvider = async provider => {
+  provider.off("close");
+  provider.off("accountsChanged");
+  provider.off("chainChanged");
+  provider.off("networkChanged");
+};
+
 // actions
 const setAddress = address => ({
   type: SET_ADDRESS,
@@ -170,6 +177,7 @@ export const connectWallet = () => async (dispatch, getState) => {
 export const disconnectWallet = () => async (dispatch, getState) => {
   const web3 = selectWeb3(getState());
   if (web3 && web3.currentProvider && web3.currentProvider.close) {
+    unsubscribeProvider(web3.currentProvider);
     await web3.currentProvider.close();
   }
   web3Modal.clearCachedProvider();

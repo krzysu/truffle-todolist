@@ -1,18 +1,23 @@
 import React, {useState} from "react";
-import {createTodo} from "../utils/contract";
+import {connect} from "react-redux";
+import {selectIsConnected} from "../store/account";
+import {addTodo} from "../store/todos";
+
 import styles from "./TodoForm.module.css";
 
-const DEFAULT_DEPOSIT = 0.01;
+const DEFAULT_DEPOSIT = 0.001;
 
-const TodoForm = ({isConnected}) => {
+const TodoForm = ({isConnected, addTodo}) => {
   const [title, setTitle] = useState("");
   const [deposit, setDeposit] = useState(DEFAULT_DEPOSIT);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    await createTodo(title, deposit);
-    setTitle("");
-    setDeposit(DEFAULT_DEPOSIT);
+    try {
+      await addTodo(title, deposit);
+      setTitle("");
+      setDeposit(DEFAULT_DEPOSIT);
+    } catch (e) {}
   };
 
   const handleTitleChange = e => {
@@ -57,4 +62,10 @@ const TodoForm = ({isConnected}) => {
   );
 };
 
-export default TodoForm;
+const mapStateToProps = state => ({
+  isConnected: selectIsConnected(state)
+});
+
+const mapDispatchToProps = {addTodo};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoForm);

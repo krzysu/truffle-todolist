@@ -10,11 +10,29 @@ This is my first Solidity and dApp learning project.
 
 ## Todo
 
-- update list when new item created or marked as done
-- keep state in redux store (or useReducer)
-- react to network and account changes
+- test if two diff account don't see each others tasks, also on updates
+- react to network and account changes, update todos list
 - deploy contract to test network and publish frontend to netlify
+
+## How to run localy
+
+1. Install dependencies
+
+   `yarn`
+
+2. Start local Ganache, make sure the configuration in `truffle-config.js` is correct
+
+3. Migrate contracts
+
+   `yarn truffle:migrate`
+
+4. Start the frontend
+
+   `yarn start`
+
+5. Connect with MetaMask using one of the test accounts provided by Ganache
 
 ## License
 
-MIT
+Built by Kris Urbas ([@krzysu](https://twitter.com/krzysu)).
+Code in this repo is available under MIT License.

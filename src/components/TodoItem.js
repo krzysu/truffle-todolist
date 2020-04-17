@@ -1,5 +1,5 @@
 import React from "react";
-import {formatBalance} from "../utils/utils";
+
 import styles from "./TodoItem.module.css";
 
 const TodoItem = ({title, deposit, isDone, onClick}) => {
@@ -11,7 +11,7 @@ const TodoItem = ({title, deposit, isDone, onClick}) => {
       </div>
       <div>
         <label>{!isDone ? "Deposit" : "Claimed"}</label>
-        <div className={styles.value}>{formatBalance(deposit)}</div>
+        <div className={styles.value}>{deposit}</div>
       </div>
       {!isDone && (
         <button onClick={onClick} className={styles.button}>

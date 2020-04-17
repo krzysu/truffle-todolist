@@ -1,72 +1,31 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
+import {connect} from "react-redux";
+import {selectIsConnected} from "../store/account";
 import {
-  getTodos,
-  markTodoAsDone,
-  subscribeToNewTodos,
-  subscribeToMarkAsDone
-} from "../utils/contract";
+  selectTodoItems,
+  selectTodoIsFetching,
+  fetchTodos,
+  markAsDone
+} from "../store/todos";
 import TodoItem from "./TodoItem";
 
-const TodoList = ({isConnected}) => {
-  // const tempItems = [
-  //   {
-  //     id: "1",
-  //     title: "First todo is a very long item that can stretch to a few lines",
-  //     deposit: "1000000000000000",
-  //     isDone: false
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Second todo",
-  //     deposit: "3000000000000000",
-  //     isDone: true
-  //   }
-  // ];
-  const [items, setItems] = useState([]);
-  const [isContractReady, setIsContractReady] = useState(false);
-
+const TodoList = ({isConnected, isFetching, items, fetchTodos, markAsDone}) => {
   useEffect(() => {
-    const run = async () => {
-      const items = await getTodos();
-      setItems(items);
-      setIsContractReady(true);
-    };
-
     if (isConnected) {
-      run();
+      fetchTodos();
     }
-  }, [isConnected]);
-
-  useEffect(() => {
-    if (!isContractReady) {
-      return;
-    }
-    const newToDoSubscription = subscribeToNewTodos((error, data) => {
-      if (error) {
-        console.error(error);
-      }
-      console.log("New item created", data);
-    });
-
-    const markAsDoneSubscription = subscribeToMarkAsDone((error, data) => {
-      if (error) {
-        console.error(error);
-      }
-      console.log("Item marked as done", data);
-    });
-
-    return () => {
-      newToDoSubscription.unsubscribe();
-      markAsDoneSubscription.unsubscribe();
-    };
-  }, [isContractReady]);
+  }, [isConnected, fetchTodos]);
 
   const handleClick = id => () => {
-    markTodoAsDone(id);
+    markAsDone(id);
   };
 
   if (!isConnected) {
     return <div>Connect your wallet to see your tasks.</div>;
+  }
+
+  if (isFetching) {
+    return <div>Loading your tasks...</div>;
   }
 
   return (
@@ -82,4 +41,12 @@ const TodoList = ({isConnected}) => {
   );
 };
 
-export default TodoList;
+const mapStateToProps = state => ({
+  isConnected: selectIsConnected(state),
+  isFetching: selectTodoIsFetching(state),
+  items: selectTodoItems(state)
+});
+
+const mapDispatchToProps = {fetchTodos, markAsDone};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

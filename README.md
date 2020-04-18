@@ -8,7 +8,13 @@ This is my first Solidity and dApp learning project.
 - read only todo items created by you
 - mark todo item as done and receive your deposit back
 
-## Todo
+## Demo
+
+![Demo animation](./demo.gif)
+
+## This project is WIP
+
+Still to do:
 
 - test if two different accounts don't see each others tasks, also on updates
 - react to network changes, test with different networks
@@ -35,4 +41,5 @@ This is my first Solidity and dApp learning project.
 ## License
 
 Built by Kris Urbas ([@krzysu](https://twitter.com/krzysu)).
+
 Code in this repo is available under MIT License.

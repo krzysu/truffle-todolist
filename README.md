@@ -11,7 +11,7 @@ This is my first Solidity and dApp learning project.
 ## Todo
 
 - test if two diff account don't see each others tasks, also on updates
-- react to network and account changes, update todos list
+- react to network changes, test with different networks
 - deploy contract to test network and publish frontend to netlify
 
 ## How to run localy

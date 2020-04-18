@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {connect} from "react-redux";
-import {selectIsConnected} from "../store/account";
-import {addTodo} from "../store/todos";
+import {selectIsConnected} from "../store/account/selectors";
+import {addTodo} from "../store/todos/actions";
 
 import styles from "./TodoForm.module.css";
 

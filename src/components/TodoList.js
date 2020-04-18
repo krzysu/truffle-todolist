@@ -1,12 +1,8 @@
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
-import {selectIsConnected} from "../store/account";
-import {
-  selectTodoItems,
-  selectTodoIsFetching,
-  fetchTodos,
-  markAsDone
-} from "../store/todos";
+import {selectIsConnected} from "../store/account/selectors";
+import {selectTodoItems, selectTodoIsFetching} from "../store/todos/selectors";
+import {fetchTodos, markAsDone} from "../store/todos/actions";
 import TodoItem from "./TodoItem";
 
 const TodoList = ({isConnected, isFetching, items, fetchTodos, markAsDone}) => {

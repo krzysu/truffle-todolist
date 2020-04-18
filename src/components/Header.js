@@ -1,12 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
+import {connectWallet, disconnectWallet} from "../store/account/actions";
 import {
-  connectWallet,
-  disconnectWallet,
   selectIsConnected,
   selectFormattedAddress,
   selectFormattedBalance
-} from "../store/account";
+} from "../store/account/selectors";
 
 import styles from "./Header.module.css";
 

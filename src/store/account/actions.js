@@ -1,80 +1,20 @@
 import Web3 from "web3";
-import web3Modal from "./web3modal";
-import {initContract} from "./contract";
-import {formatAddress, formatBalance} from "../utils";
+import web3Modal from "../web3modal";
+import {initContract} from "../contract";
+import {fetchTodos} from "../todos/actions";
+import {
+  CONNECTED,
+  SET_ADDRESS,
+  SET_BALANCE,
+  SET_CHAIN_ID,
+  SET_NETWORK_ID,
+  SET_WEB3,
+  SET_CONTRACT,
+  DISCONNECTED
+} from "./reducer";
+import {selectWeb3} from "./selectors";
 
-const CONNECTED = "account/CONNECTED";
-const SET_ADDRESS = "account/SET_ADDRESS";
-const SET_BALANCE = "account/SET_BALANCE";
-const SET_CHAIN_ID = "account/SET_CHAIN_ID";
-const SET_NETWORK_ID = "account/SET_NETWORK_ID";
-const SET_WEB3 = "account/SET_WEB3";
-const SET_CONTRACT = "account/SET_CONTRACT";
-export const DISCONNECTED = "account/DISCONNECTED";
-
-const initialState = {
-  isConnected: false,
-  address: "",
-  balance: "0",
-  chainId: "",
-  networkId: "",
-  web3: null,
-  contract: null
-};
-
-export const reducer = (state = initialState, action = {}) => {
-  switch (action.type) {
-    case CONNECTED:
-      return {
-        ...state,
-        isConnected: true
-      };
-
-    case DISCONNECTED:
-      return initialState;
-
-    case SET_ADDRESS:
-      return {
-        ...state,
-        address: action.payload
-      };
-
-    case SET_BALANCE:
-      return {
-        ...state,
-        balance: action.payload
-      };
-
-    case SET_CHAIN_ID:
-      return {
-        ...state,
-        chainId: action.payload
-      };
-
-    case SET_NETWORK_ID:
-      return {
-        ...state,
-        networkId: action.payload
-      };
-
-    case SET_WEB3:
-      return {
-        ...state,
-        web3: action.payload
-      };
-
-    case SET_CONTRACT:
-      return {
-        ...state,
-        contract: action.payload
-      };
-
-    default:
-      return state;
-  }
-};
-
-// action helpers
+// subscriptions
 const subscribeProvider = async (provider, dispatch, getState) => {
   if (!provider.on) {
     return;
@@ -93,6 +33,8 @@ const subscribeProvider = async (provider, dispatch, getState) => {
 
     const balance = await web3.eth.getBalance(address);
     dispatch(setBalance(balance));
+
+    dispatch(fetchTodos());
   });
 
   provider.on("chainChanged", async chainId => {
@@ -188,24 +130,4 @@ export const connectCachedWallet = () => async dispatch => {
   if (web3Modal.cachedProvider) {
     dispatch(connectWallet());
   }
-};
-
-// selectors
-const selectAccount = state => state.account || {};
-
-export const selectWeb3 = state => selectAccount(state).web3;
-export const selectContract = state => selectAccount(state).contract;
-
-export const selectIsConnected = state => selectAccount(state).isConnected;
-export const selectFormattedAddress = state =>
-  formatAddress(selectAccount(state).address);
-
-export const selectFormattedBalance = state => {
-  const web3 = selectWeb3(state);
-  if (!web3) {
-    return 0;
-  }
-  const balance = selectAccount(state).balance;
-  const balanceString = web3.utils.fromWei(balance);
-  return formatBalance(balanceString);
 };

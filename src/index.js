@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {combineReducers, createStore, applyMiddleware, compose} from "redux";
 import thunk from "redux-thunk";
-import {reducer as accountReducer} from "./store/account";
-import {reducer as todosReducer} from "./store/todos";
+import {reducer as accountReducer} from "./store/account/reducer";
+import {reducer as todosReducer} from "./store/todos/reducer";
 import App from "./App";
 
 import "./index.css";

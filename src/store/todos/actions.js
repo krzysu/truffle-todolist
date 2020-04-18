@@ -6,6 +6,7 @@ import {
   subscribeToNewTodos
 } from "../contract";
 import {selectWeb3, selectContract} from "../account/selectors";
+import {updateBalance} from "../account/actions";
 import {
   TODOS_FETCHING,
   TODOS_FETCHED,
@@ -39,11 +40,10 @@ export const fetchTodos = () => async (dispatch, getState) => {
   dispatch({type: TODOS_FETCHED});
 };
 
-export const markAsDone = id => (dispatch, getState) => {
+export const markAsDone = id => async (dispatch, getState) => {
   const state = getState();
   const web3 = selectWeb3(state);
   const contract = selectContract(state);
-  markTodoAsDone(contract, web3)(id);
 
   const markAsDoneSubscription = subscribeToMarkAsDone(contract)(
     (error, data) => {
@@ -55,6 +55,9 @@ export const markAsDone = id => (dispatch, getState) => {
       markAsDoneSubscription.unsubscribe();
     }
   );
+
+  await markTodoAsDone(contract, web3)(id);
+  dispatch(updateBalance());
 };
 
 export const addTodo = (title, deposit) => async (dispatch, getState) => {
@@ -83,4 +86,5 @@ export const addTodo = (title, deposit) => async (dispatch, getState) => {
   });
 
   await createTodo(contract, web3)(title, deposit);
+  dispatch(updateBalance());
 };

@@ -6,8 +6,10 @@ export const selectWeb3 = state => selectAccount(state).web3;
 export const selectContract = state => selectAccount(state).contract;
 
 export const selectIsConnected = state => selectAccount(state).isConnected;
+export const selectAddress = state => selectAccount(state).address;
+
 export const selectFormattedAddress = state =>
-  formatAddress(selectAccount(state).address);
+  formatAddress(selectAddress(state));
 
 export const selectFormattedBalance = state => {
   const web3 = selectWeb3(state);

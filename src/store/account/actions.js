@@ -12,7 +12,7 @@ import {
   SET_CONTRACT,
   DISCONNECTED
 } from "./reducer";
-import {selectWeb3} from "./selectors";
+import {selectWeb3, selectAddress} from "./selectors";
 
 // subscriptions
 const subscribeProvider = async (provider, dispatch, getState) => {
@@ -31,9 +31,7 @@ const subscribeProvider = async (provider, dispatch, getState) => {
     web3.eth.defaultAccount = address;
     dispatch(setAddress(address));
 
-    const balance = await web3.eth.getBalance(address);
-    dispatch(setBalance(balance));
-
+    dispatch(updateBalance());
     dispatch(fetchTodos());
   });
 
@@ -104,8 +102,7 @@ export const connectWallet = () => async (dispatch, getState) => {
   const address = accounts[0];
   dispatch(setAddress(address));
 
-  const balance = await web3.eth.getBalance(address);
-  dispatch(setBalance(balance));
+  dispatch(updateBalance());
 
   const networkId = await web3.eth.net.getId();
   dispatch(setNetworkId(networkId));
@@ -130,4 +127,12 @@ export const connectCachedWallet = () => async dispatch => {
   if (web3Modal.cachedProvider) {
     dispatch(connectWallet());
   }
+};
+
+export const updateBalance = () => async (dispatch, getState) => {
+  const state = getState();
+  const web3 = selectWeb3(state);
+  const address = selectAddress(state);
+  const balance = await web3.eth.getBalance(address);
+  dispatch(setBalance(balance));
 };

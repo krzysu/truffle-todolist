@@ -17,8 +17,8 @@ This is my first Solidity and dApp learning project.
 Still to do:
 
 - test if two different accounts don't see each others tasks, also on updates
-- react to network changes, test with different networks
-- deploy contract to test network and publish frontend to netlify
+- show that transaction is being processed
+- publish frontend to netlify
 
 ## How to run localy
 
@@ -40,7 +40,7 @@ Still to do:
 
 ## Test networks
 
-`ToDoList.sol` contract is deployed:
+`ToDoList.sol` contract is deployed to:
 
 - Rinkeby [0x084B844b23Be20F7024fB147043e334dbFEe6C96](https://rinkeby.etherscan.io/address/0x084b844b23be20f7024fb147043e334dbfee6c96)
 - Ropsten [0x084B844b23Be20F7024fB147043e334dbFEe6C96](https://ropsten.etherscan.io/address/0x084B844b23Be20F7024fB147043e334dbFEe6C96)

@@ -1,20 +1,20 @@
 export const CONNECTED = "account/CONNECTED";
 export const SET_ADDRESS = "account/SET_ADDRESS";
 export const SET_BALANCE = "account/SET_BALANCE";
-export const SET_CHAIN_ID = "account/SET_CHAIN_ID";
 export const SET_NETWORK_ID = "account/SET_NETWORK_ID";
 export const SET_WEB3 = "account/SET_WEB3";
 export const SET_CONTRACT = "account/SET_CONTRACT";
+export const SET_ERROR = "account/SET_ERROR";
 export const DISCONNECTED = "account/DISCONNECTED";
 
 const initialState = {
   isConnected: false,
   address: "",
   balance: "0",
-  chainId: "",
   networkId: "",
   web3: null,
-  contract: null
+  contract: null,
+  error: null
 };
 
 export const reducer = (state = initialState, action = {}) => {
@@ -40,12 +40,6 @@ export const reducer = (state = initialState, action = {}) => {
         balance: action.payload
       };
 
-    case SET_CHAIN_ID:
-      return {
-        ...state,
-        chainId: action.payload
-      };
-
     case SET_NETWORK_ID:
       return {
         ...state,
@@ -62,6 +56,12 @@ export const reducer = (state = initialState, action = {}) => {
       return {
         ...state,
         contract: action.payload
+      };
+
+    case SET_ERROR:
+      return {
+        ...state,
+        error: action.payload
       };
 
     default:

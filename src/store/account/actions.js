@@ -6,10 +6,10 @@ import {
   CONNECTED,
   SET_ADDRESS,
   SET_BALANCE,
-  SET_CHAIN_ID,
   SET_NETWORK_ID,
   SET_WEB3,
   SET_CONTRACT,
+  SET_ERROR,
   DISCONNECTED
 } from "./reducer";
 import {selectWeb3, selectAddress} from "./selectors";
@@ -35,19 +35,19 @@ const subscribeProvider = async (provider, dispatch, getState) => {
     dispatch(fetchTodos());
   });
 
-  provider.on("chainChanged", async chainId => {
+  provider.on("chainChanged", async () => {
     const web3 = selectWeb3(getState());
     const networkId = await web3.eth.net.getId();
-
     dispatch(setNetworkId(networkId));
-    dispatch(setChainId(chainId));
+
+    await updateContract(web3, networkId, dispatch);
   });
 
   provider.on("networkChanged", async networkId => {
     const web3 = selectWeb3(getState());
-    const chainId = await web3.eth.chainId();
     dispatch(setNetworkId(networkId));
-    dispatch(setChainId(chainId));
+
+    await updateContract(web3, networkId, dispatch);
   });
 };
 
@@ -56,6 +56,16 @@ const unsubscribeProvider = async provider => {
   provider.off("accountsChanged");
   provider.off("chainChanged");
   provider.off("networkChanged");
+};
+
+const updateContract = async (web3, networkId, dispatch) => {
+  try {
+    const contract = await initContract(web3, networkId);
+    dispatch(setContract(contract));
+    dispatch(setError(null));
+  } catch (e) {
+    dispatch(setError(e.message));
+  }
 };
 
 // actions
@@ -67,11 +77,6 @@ const setAddress = address => ({
 const setBalance = balance => ({
   type: SET_BALANCE,
   payload: balance
-});
-
-const setChainId = chainId => ({
-  type: SET_CHAIN_ID,
-  payload: chainId
 });
 
 const setNetworkId = networkId => ({
@@ -87,6 +92,11 @@ const setWeb3 = web3 => ({
 const setContract = contract => ({
   type: SET_CONTRACT,
   payload: contract
+});
+
+const setError = error => ({
+  type: SET_ERROR,
+  payload: error
 });
 
 export const connectWallet = () => async (dispatch, getState) => {
@@ -107,8 +117,7 @@ export const connectWallet = () => async (dispatch, getState) => {
   const networkId = await web3.eth.net.getId();
   dispatch(setNetworkId(networkId));
 
-  const contract = await initContract(web3, networkId);
-  dispatch(setContract(contract));
+  await updateContract(web3, networkId, dispatch);
 
   dispatch({type: CONNECTED});
 };

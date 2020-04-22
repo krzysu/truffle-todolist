@@ -6,8 +6,9 @@ export const initContract = (web3, networkId) => {
     : false;
 
   if (!contractAddress) {
-    console.warn("Unknown network id", networkId);
-    return false;
+    console.error("Unknown network id", networkId);
+    throw new Error(`Currently selected network is not supported. 
+    Change to Ropsten or Rinkeby.`);
   }
 
   return new web3.eth.Contract(ToDoListJson.abi, contractAddress);

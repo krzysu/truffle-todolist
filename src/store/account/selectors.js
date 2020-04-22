@@ -7,6 +7,7 @@ export const selectContract = state => selectAccount(state).contract;
 
 export const selectIsConnected = state => selectAccount(state).isConnected;
 export const selectAddress = state => selectAccount(state).address;
+export const selectError = state => selectAccount(state).error;
 
 export const selectFormattedAddress = state =>
   formatAddress(selectAddress(state));

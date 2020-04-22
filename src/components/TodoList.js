@@ -1,20 +1,31 @@
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
-import {selectIsConnected} from "../store/account/selectors";
+import {selectIsConnected, selectError} from "../store/account/selectors";
 import {selectTodoItems, selectTodoIsFetching} from "../store/todos/selectors";
 import {fetchTodos, markAsDone} from "../store/todos/actions";
 import TodoItem from "./TodoItem";
 
-const TodoList = ({isConnected, isFetching, items, fetchTodos, markAsDone}) => {
+const TodoList = ({
+  isConnected,
+  isFetching,
+  error,
+  items,
+  fetchTodos,
+  markAsDone
+}) => {
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && !error) {
       fetchTodos();
     }
-  }, [isConnected, fetchTodos]);
+  }, [isConnected, fetchTodos, error]);
 
   const handleClick = id => () => {
     markAsDone(id);
   };
+
+  if (error) {
+    return <div style={{color: "red"}}>{error}</div>;
+  }
 
   if (!isConnected) {
     return <div>Connect your wallet to see your tasks.</div>;
@@ -40,7 +51,8 @@ const TodoList = ({isConnected, isFetching, items, fetchTodos, markAsDone}) => {
 const mapStateToProps = state => ({
   isConnected: selectIsConnected(state),
   isFetching: selectTodoIsFetching(state),
-  items: selectTodoItems(state)
+  items: selectTodoItems(state),
+  error: selectError(state)
 });
 
 const mapDispatchToProps = {fetchTodos, markAsDone};

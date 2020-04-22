@@ -38,6 +38,13 @@ Still to do:
 
 5. Connect with MetaMask using one of the test accounts provided by Ganache
 
+## Test networks
+
+`ToDoList.sol` contract is deployed:
+
+- Rinkeby [0x084B844b23Be20F7024fB147043e334dbFEe6C96](https://rinkeby.etherscan.io/address/0x084b844b23be20f7024fb147043e334dbfee6c96)
+- Ropsten [0x084B844b23Be20F7024fB147043e334dbFEe6C96](https://ropsten.etherscan.io/address/0x084B844b23Be20F7024fB147043e334dbFEe6C96)
+
 ## License
 
 Built by Kris Urbas ([@krzysu](https://twitter.com/krzysu)).

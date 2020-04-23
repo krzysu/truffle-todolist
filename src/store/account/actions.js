@@ -52,10 +52,10 @@ const subscribeProvider = async (provider, dispatch, getState) => {
 };
 
 const unsubscribeProvider = async provider => {
-  provider.off("close");
-  provider.off("accountsChanged");
-  provider.off("chainChanged");
-  provider.off("networkChanged");
+  provider.removeAllListeners("close");
+  provider.removeAllListeners("accountsChanged");
+  provider.removeAllListeners("chainChanged");
+  provider.removeAllListeners("networkChanged");
 };
 
 const updateContract = async (web3, networkId, dispatch) => {

@@ -10,7 +10,7 @@ This is my first Solidity and dApp learning project.
 
 ## Demo
 
-Play with it here: [eth-todo-list-demo.netlify.app](https://eth-todo-list-demo.netlify.app/)
+Play with it here: [eth-todo-list-demo2.netlify.app](https://eth-todo-list-demo2.netlify.app/)
 
 This dApp works with MetaMask and WalletConnect and is deployed to Rinkeby and Ropsten networks.
 
@@ -22,7 +22,6 @@ Still to do:
 
 - test if two different accounts don't see each others tasks, also on updates
 - show that transaction is being processed
-- webconnect disconnect bug
 
 ## How to run localy
 

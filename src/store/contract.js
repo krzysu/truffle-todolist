@@ -1,4 +1,4 @@
-import ToDoListJson from "../contracts/ToDoList.json";
+import ToDoListJson from "../contracts/ToDoList.min.json";
 
 export const initContract = (web3, networkId) => {
   const contractAddress = ToDoListJson.networks[networkId]

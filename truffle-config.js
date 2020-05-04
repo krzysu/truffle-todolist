@@ -33,7 +33,7 @@ const infuraApiKey = process.env.REACT_APP_INFURA_ID;
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
-  plugins: ["truffle-security"],
+  plugins: ["truffle-security", "solidity-coverage"],
 
   contracts_build_directory: path.join(__dirname, "src/contracts/build"),
   /**
